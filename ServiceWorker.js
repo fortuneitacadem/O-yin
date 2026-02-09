@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-Frenzy Farming-1.0";
 const contentToCache = [
-    "Build/Tettttttttttttss.loader.js",
-    "Build/Tettttttttttttss.framework.js",
-    "Build/Tettttttttttttss.data",
-    "Build/Tettttttttttttss.wasm",
+    "Build/avaferm.loader.js",
+    "Build/avaferm.framework.js",
+    "Build/avaferm.data",
+    "Build/avaferm.wasm",
     "TemplateData/style.css"
 
 ];
