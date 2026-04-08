@@ -1,103 +1,144 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Frenzy Farming</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-    <link rel="manifest" href="manifest.webmanifest">
-  </head>
-  <body>
-    <div id="unity-container">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Ssenariy Pro - Ultra Maktab Teatri</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600;800&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Marked.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Vanilla Tilt for 3D Cards -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <!-- Three.js for 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div class="overlay-mesh"></div>
+
+    <div id="mainApp" class="app-container">
+        <header data-tilt data-tilt-max="2" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+            <div class="logo">
+                <i class="fa-solid fa-robot floating-icon icon-glow"></i>
+                <div class="title-wrap">
+                    <h1>AI SSENARIY <span class="highlight"></span></h1>
+                    <p class="subtitle">Neyrotarmoqlar asosidagi teatr senariylari yaratish markazi</p>
+                </div>
+            </div>
+            
+            <div class="header-tools">
+                <button id="settingsBtn" class="tool-btn" title="Sozlamalar"><i class="fa-solid fa-gear"></i></button>
+                <div class="ai-status">
+                    <span class="status-dot"></span> AI Online
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="input-card glass-panel" data-tilt data-tilt-max="2" data-tilt-speed="400" data-tilt-perspective="1000">
+                <div class="hero-text">
+                    <h2>Mukammal Tadbir Rejasini Yaratish</h2>
+                    <p>Sun'iy intellekt sizga eng zo'r dialoglar, 3D dekoratsiyalar va xronologiyani o'z ichiga olgan mukammal ssenariyni yozib beradi!</p>
+                </div>
+                
+                <div class="search-box">
+                    <div class="input-wrapper glowing-border">
+                        <i class="fa-solid fa-wand-magic-sparkles input-icon"></i>
+                        <input type="text" id="topicInput" placeholder="Mavzuni yozing... (masalan: Amir Temur, Navro'z, Bitiruv)">
+                        <div class="glow-effect"></div>
+                    </div>
+                    <button id="generateBtn" class="generate-btn glowing-btn">
+                        <span class="btn-text">REJA TUZISH</span>
+                        <i class="fa-solid fa-bolt lightning"></i>
+                    </button>
+                </div>
+                <div class="tags-container" id="tagsList">
+                    <span class="tag">Amir Temur</span>
+                    <span class="tag">Navro'z</span>
+                    <span class="tag">O'qituvchilar kuni</span>
+                    <span class="tag">Alpomish</span>
+                    <span class="tag">Til bayrami</span>
+                    <span class="tag">Bitiruv kechasi</span>
+                </div>
+            </div>
+
+            <!-- Ultra Loading State -->
+            <div id="loadingState" class="loading-container hidden">
+                <div class="ai-loader">
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                    <i class="fa-solid fa-brain loader-icon"></i>
+                </div>
+                <p class="loading-text" id="loadingText">AI Ma'lumotlarni analiz qilmoqda...</p>
+            </div>
+
+            <!-- Result Box -->
+            <div id="resultCard" class="result-card glass-panel hidden" data-tilt data-tilt-max="1" data-tilt-speed="1000">
+                <div class="result-toolbar">
+                    <div class="toolbar-group">
+                        <button id="copyBtn" class="action-btn" title="Nusxa olish"><i class="fa-regular fa-copy"></i></button>
+                        <button id="printBtn" class="action-btn" title="Chop etish"><i class="fa-solid fa-print"></i></button>
+                        <button id="pdfBtn" class="action-btn" title="PDF ga saqlash"><i class="fa-solid fa-file-pdf"></i></button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="translateBtn" class="action-btn gold-btn" title="Tarjima qilish"><i class="fa-solid fa-language"></i> EN</button>
+                        <button id="voiceBtn" class="action-btn gold-btn" title="Ovozli o'qish"><i class="fa-solid fa-volume-high"></i> O'qish</button>
+                    </div>
+                </div>
+                <!-- AI Output Content -->
+                <div class="ai-output-container">
+                    <div class="ai-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div id="resultContent" class="markdown-content">
+                        <!-- Dynamic Content gets injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-    <script>
-      window.addEventListener("load", function () {
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.register("ServiceWorker.js");
-        }
-      });
 
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var warningBanner = document.querySelector("#unity-warning");
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content glass-panel" data-tilt data-tilt-max="1" data-tilt-speed="500">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-gear"></i> Sozlamalar</h2>
+                <button id="closeSettings" class="icon-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label>Mavzu Rangi</label>
+                    <select id="themeSelect" class="form-control">
+                        <option value="neon">Neon AI (Ko'k-Binafsha)</option>
+                        <option value="gold">Shohona (Oltin-Qora)</option>
+                        <option value="cyber">Cyberpunk (Pushti-Sariq)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Ovoz tezligi (AI Voice)</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="range" id="voiceSpeed" min="0.5" max="2" step="0.1" value="1" class="form-control" style="flex: 1;">
+                        <span id="speedValue" style="color: var(--neon-purple); font-weight: 600;">1.0x</span>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <label>Matn O'lchami</label>
+                    <select id="fontSizeSelect" class="form-control">
+                        <option value="1rem">Kichik</option>
+                        <option value="1.1rem" selected>O'rtacha</option>
+                        <option value="1.3rem">Katta</option>
+                        <option value="1.5rem">Ultra Katta</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
-
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/avaferm.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/avaferm.data",
-        frameworkUrl: buildUrl + "/avaferm.framework.js",
-        codeUrl: buildUrl + "/avaferm.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Frenzy Farming",
-        productVersion: "1.0",
-        showBanner: unityShowBanner,
-      };
-
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-      }
-
-      loadingBar.style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-      document.body.appendChild(script);
-    </script>
-  </body>
+    <!-- html2pdf for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
